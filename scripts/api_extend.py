@@ -62,7 +62,7 @@ from fastapi import FastAPI, Body
 from modules.api.models import *
 from modules.api import api
 def sam_api(_, app: FastAPI):
-    @app.post("/segment_anything/get_img_masks")
+    @app.post("/sam_extend/get_img_masks")
     async def get_img_masks(input_image: str = Body(""), model:str=Body("sam_vit_h_4b8939.pth")):
         img0 =api.decode_base64_to_image(input_image)
         #sam_mode = sam_model_registry["default"](checkpoint=str(file))  使用服务器这里不清楚为啥不能用

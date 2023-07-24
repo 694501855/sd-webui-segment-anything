@@ -57,7 +57,7 @@ if __name__ == '__main__':
         file=os.path.join(dirname, f"{i}.png")
         item.save(file)
 
-
+from modules.devices import device, torch_gc, cpu
 from fastapi import FastAPI, Body
 from modules.api.models import *
 from modules.api import api
@@ -65,8 +65,9 @@ def sam_api(_, app: FastAPI):
     @app.post("/sam_extend/get_img_masks")
     async def get_img_masks(input_image: str = Body(""), model:str=Body("sam_vit_h_4b8939.pth")):
         img0 =api.decode_base64_to_image(input_image)
-        #sam_mode = sam_model_registry["default"](checkpoint=str(file))  Ê¹ÓÃ·þÎñÆ÷ÕâÀï²»Çå³þÎªÉ¶²»ÄÜÓÃ
-        sam_mode=sam.load_sam_model(model)
+        #sam_mode = sam_model_registry["default"](checkpoint=str(file))  Ê¹ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½ï¿½ï¿½ÎªÉ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        sam_mode=sam.init_sam_model(model)
+        sam_mode.to(device=cpu)
         imgs=img_masks(sam_mode,img0)
         img_texts=[]
         for i,item in enumerate(imgs) :
